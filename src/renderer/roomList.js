@@ -1,14 +1,6 @@
-function getStatusColor(status) {
-  switch (status) {
-    case 'available':
-      return '#4CAF50'; // Green
-    case 'occupied':
-      return '#F44336'; // Red
-    case 'maintenance':
-      return '#FF9800'; // Orange
-    default:
-      return '#9E9E9E'; // Grey
-  }
+// Remove theme import and update the room rendering to use CSS classes
+function getStatusClass(status) {
+  return status || 'default';
 }
 
 function formatPrice(price) {
@@ -64,7 +56,7 @@ async function loadRooms() {
               <div class="room-card">
                 <div class="room-header">
                   <h3>${room.name}</h3>
-                  <span class="status-badge" style="background-color: ${getStatusColor(room.status)}">
+                  <span class="status-badge ${getStatusClass(room.status)}">
                     ${room.status}
                   </span>
                 </div>

@@ -61,14 +61,8 @@ async function loadRooms() {
 }
 
 // Function to view room details
-async function viewRoom(roomId) {
-  try {
-    // TODO: Implement view room details functionality
-    console.log('Viewing room:', roomId);
-  } catch (error) {
-    console.error('Error viewing room:', error);
-    alert('Failed to view room details. Please try again.');
-  }
+function viewRoom(roomId) {
+  window.location.href = `roomDetails.html?id=${roomId}`;
 }
 
 // Function to edit room

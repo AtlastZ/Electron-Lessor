@@ -14,7 +14,7 @@ async function createWindow() {
     }
   })
 
-  win.loadFile('index.html')
+  win.loadFile('src/pages/index.html')
   // Open the DevTools.
   // win.webContents.openDevTools()
 }
@@ -26,6 +26,16 @@ ipcMain.handle('get-rooms', async () => {
     return rooms;
   } catch (error) {
     console.error('Error getting rooms:', error);
+    throw error;
+  }
+});
+
+ipcMain.handle('get-room-by-id', async (event, roomId) => {
+  try {
+    const room = await database.get('SELECT * FROM rooms WHERE id = ?', [roomId]);
+    return room;
+  } catch (error) {
+    console.error('Error getting room by ID:', error);
     throw error;
   }
 });

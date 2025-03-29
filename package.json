@@ -10,7 +10,8 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
     "build:linux": "electron-builder --linux",
-    "build:all": "electron-builder --win --mac --linux"
+    "build:all": "electron-builder --win --mac --linux",
+    "rebuild": "electron-rebuild"
   },
   "license": "MIT",
   "packageManager": "yarn@4.8.0",
@@ -19,7 +20,8 @@
   },
   "devDependencies": {
     "electron": "^35.1.2",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
   },
   "build": {
     "appId": "com.electron.lessor",
@@ -36,5 +38,8 @@
     "linux": {
       "target": "AppImage"
     }
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
   }
 }

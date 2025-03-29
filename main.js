@@ -40,6 +40,32 @@ ipcMain.handle('get-room-by-id', async (event, roomId) => {
   }
 });
 
+ipcMain.handle('create-room', async (event, roomData) => {
+  try {
+    const result = await database.run(
+      'INSERT INTO rooms (name, status, description, price, created_at) VALUES (?, ?, ?, ?, datetime("now"))',
+      [roomData.name, roomData.status, roomData.description, roomData.price]
+    );
+    return { id: result.lastID };
+  } catch (error) {
+    console.error('Error creating room:', error);
+    throw error;
+  }
+});
+
+ipcMain.handle('update-room', async (event, roomId, roomData) => {
+  try {
+    await database.run(
+      'UPDATE rooms SET name = ?, status = ?, description = ?, price = ? WHERE id = ?',
+      [roomData.name, roomData.status, roomData.description, roomData.price, roomId]
+    );
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating room:', error);
+    throw error;
+  }
+});
+
 ipcMain.handle('book-room', async (event, roomId) => {
   try {
     await database.run('UPDATE rooms SET status = ? WHERE id = ?', ['occupied', roomId]);

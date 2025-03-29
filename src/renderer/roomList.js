@@ -89,10 +89,32 @@ async function deleteRoom(roomId) {
   }
 }
 
+// Function to add new room
+async function addNewRoom() {
+  try {
+    // TODO: Implement add room functionality
+    console.log('Adding new room...');
+    // For now, we'll just redirect to roomDetails.html without an ID
+    window.location.href = 'roomDetails.html';
+  } catch (error) {
+    console.error('Error adding new room:', error);
+    alert('Failed to add new room. Please try again.');
+  }
+}
+
 // Make functions available globally for onclick handlers
 window.viewRoom = viewRoom;
 window.editRoom = editRoom;
 window.deleteRoom = deleteRoom;
+window.addNewRoom = addNewRoom;
 
 // Load rooms when the page loads
-document.addEventListener('DOMContentLoaded', loadRooms); 
+document.addEventListener('DOMContentLoaded', () => {
+  loadRooms();
+  
+  // Add event listener for the new room button
+  const addRoomBtn = document.getElementById('addRoomBtn');
+  if (addRoomBtn) {
+    addRoomBtn.addEventListener('click', addNewRoom);
+  }
+}); 

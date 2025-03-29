@@ -17,31 +17,38 @@
     <div class="container">
         <div class="page-header">
             <button class="back-btn" onclick="goBack()">← Back to Room List</button>
-            <h1>Room Details</h1>
+            <h1 id="pageTitle">Room Details</h1>
         </div>
         <div class="room-details-container">
-            <div class="room-details">
-                <div class="detail-row">
-                    <span class="detail-label">Room Name:</span>
-                    <span id="roomName" class="detail-value"></span>
+            <form class="room-form" onsubmit="event.preventDefault(); saveRoom();">
+                <div class="form-row">
+                    <label for="roomName">Room Name:</label>
+                    <input type="text" id="roomName" required>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Status:</span>
-                    <span id="status" class="detail-value"></span>
+                <div class="form-row">
+                    <label for="status">Status:</label>
+                    <select id="status" required>
+                        <option value="available">Available</option>
+                        <option value="occupied">Occupied</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Description:</span>
-                    <span id="description" class="detail-value"></span>
+                <div class="form-row">
+                    <label for="description">Description:</label>
+                    <textarea id="description" rows="4"></textarea>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Price:</span>
-                    <span id="price" class="detail-value"></span>
+                <div class="form-row">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" step="0.01" min="0" required>
                 </div>
-                <div class="detail-row">
+                <div class="form-row">
                     <span class="detail-label">Created At:</span>
                     <span id="createdAt" class="detail-value"></span>
                 </div>
-            </div>
+                <div class="form-actions">
+                    <button type="submit" id="saveBtn" class="primary-btn">Save Room</button>
+                </div>
+            </form>
         </div>
     </div>
     <script src="../renderer/roomDetails.js"></script>

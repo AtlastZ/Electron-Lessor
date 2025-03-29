@@ -20,7 +20,7 @@ async function loadRooms() {
     }
 
     // Show loading state
-    roomList.innerHTML = '<div class="loading">Loading rooms...</div>';
+    roomList.innerHTML = '<tr><td colspan="3" class="loading">Loading rooms...</td></tr>';
 
     // Get rooms from database through IPC
     console.log('Requesting rooms from main process...');
@@ -29,72 +29,76 @@ async function loadRooms() {
     
     if (!rooms || rooms.length === 0) {
       console.log('No rooms found');
-      roomList.innerHTML = '<div class="no-rooms">No rooms available</div>';
+      roomList.innerHTML = '<tr><td colspan="3" class="no-rooms">No rooms available</td></tr>';
       return;
     }
 
-    // Group rooms by floor
-    const roomsByFloor = rooms.reduce((acc, room) => {
-      const floor = room.name.split(' ')[1][0];
-      if (!acc[floor]) {
-        acc[floor] = [];
-      }
-      acc[floor].push(room);
-      return acc;
-    }, {});
-
-    console.log('Rooms grouped by floor:', roomsByFloor);
-
-    // Render rooms by floor
-    roomList.innerHTML = Object.entries(roomsByFloor)
-      .sort(([a], [b]) => a - b)
-      .map(([floor, floorRooms]) => `
-        <div class="floor-section">
-          <h2>Floor ${floor}</h2>
-          <div class="floor-rooms">
-            ${floorRooms.map(room => `
-              <div class="room-card">
-                <div class="room-header">
-                  <h3>${room.name}</h3>
-                  <span class="status-badge ${getStatusClass(room.status)}">
-                    ${room.status}
-                  </span>
-                </div>
-                <p class="description">${room.description}</p>
-                <div class="room-footer">
-                  <span class="price">${formatPrice(room.price)}</span>
-                  <button class="book-btn" onclick="bookRoom(${room.id})" ${room.status !== 'available' ? 'disabled' : ''}>
-                    ${room.status === 'available' ? 'Book Now' : 'Not Available'}
-                  </button>
-                </div>
-              </div>
-            `).join('')}
+    // Render rooms in table format
+    roomList.innerHTML = rooms.map(room => `
+      <tr>
+        <td>${room.name}</td>
+        <td>
+          <span class="status-badge ${getStatusClass(room.status)}">
+            ${room.status}
+          </span>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button class="action-btn view-btn" onclick="viewRoom(${room.id})">View</button>
+            <button class="action-btn edit-btn" onclick="editRoom(${room.id})">Edit</button>
+            <button class="action-btn delete-btn" onclick="deleteRoom(${room.id})">Delete</button>
           </div>
-        </div>
-      `).join('');
+        </td>
+      </tr>
+    `).join('');
   } catch (error) {
     console.error('Error loading rooms:', error);
     const roomList = document.getElementById('roomList');
     if (roomList) {
-      roomList.innerHTML = '<div class="error">Error loading rooms. Please try again.</div>';
+      roomList.innerHTML = '<tr><td colspan="3" class="error">Error loading rooms. Please try again.</td></tr>';
     }
   }
 }
 
-// Function to handle room booking
-async function bookRoom(roomId) {
+// Function to view room details
+async function viewRoom(roomId) {
   try {
-    await window.electronAPI.bookRoom(roomId);
-    // Reload the room list to show updated status
-    await loadRooms();
+    // TODO: Implement view room details functionality
+    console.log('Viewing room:', roomId);
   } catch (error) {
-    console.error('Error booking room:', error);
-    alert('Failed to book room. Please try again.');
+    console.error('Error viewing room:', error);
+    alert('Failed to view room details. Please try again.');
   }
 }
 
-// Make bookRoom available globally for onclick handlers
-window.bookRoom = bookRoom;
+// Function to edit room
+async function editRoom(roomId) {
+  try {
+    // TODO: Implement edit room functionality
+    console.log('Editing room:', roomId);
+  } catch (error) {
+    console.error('Error editing room:', error);
+    alert('Failed to edit room. Please try again.');
+  }
+}
+
+// Function to delete room
+async function deleteRoom(roomId) {
+  try {
+    if (confirm('Are you sure you want to delete this room?')) {
+      // TODO: Implement delete room functionality
+      console.log('Deleting room:', roomId);
+    }
+  } catch (error) {
+    console.error('Error deleting room:', error);
+    alert('Failed to delete room. Please try again.');
+  }
+}
+
+// Make functions available globally for onclick handlers
+window.viewRoom = viewRoom;
+window.editRoom = editRoom;
+window.deleteRoom = deleteRoom;
 
 // Load rooms when the page loads
 document.addEventListener('DOMContentLoaded', loadRooms); 

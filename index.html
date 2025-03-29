@@ -15,9 +15,20 @@
   </head>
   <body>
     <div class="container">
-        <h1>Available Rooms</h1>
-        <div id="roomList">
-            <!-- Room cards will be inserted here -->
+        <h1>Room Management</h1>
+        <div class="table-container">
+            <table class="room-table">
+                <thead>
+                    <tr>
+                        <th>Room Name</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="roomList">
+                    <!-- Room rows will be inserted here -->
+                </tbody>
+            </table>
         </div>
     </div>
     <script src="src/renderer/roomList.js"></script>

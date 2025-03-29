@@ -1,43 +1,94 @@
 const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-const { app } = require('electron');
+const { getDatabasePath } = require('./paths');
 
-// Get the user data path for the app
-const userDataPath = app.getPath('userData');
-const dbPath = path.join(userDataPath, 'database.sqlite');
-
-// Initialize the database
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error opening database:', err);
-    return;
+class Database {
+  constructor() {
+    this.db = null;
+    this.dbPath = getDatabasePath();
+    console.log('Database path:', this.dbPath);
   }
-  
-  // Enable foreign keys
-  db.run('PRAGMA foreign_keys = ON');
-  
-  // Create tables if they don't exist
-  db.serialize(() => {
-    db.run(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    
-    db.run(`
-      CREATE TABLE IF NOT EXISTS items (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT,
-        user_id INTEGER,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
-      )
-    `);
-  });
-});
 
-module.exports = db; 
+  connect() {
+    return new Promise((resolve, reject) => {
+      console.log('Connecting to database at:', this.dbPath);
+      this.db = new sqlite3.Database(this.dbPath, (err) => {
+        if (err) {
+          console.error('Error opening database:', err);
+          reject(err);
+          return;
+        }
+        
+        // Enable foreign keys
+        this.db.run('PRAGMA foreign_keys = ON');
+        console.log('Database connected successfully');
+        resolve();
+      });
+    });
+  }
+
+  close() {
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        this.db.close((err) => {
+          if (err) {
+            console.error('Error closing database:', err);
+            reject(err);
+            return;
+          }
+          console.log('Database closed successfully');
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  run(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      console.log('Running query:', sql, 'with params:', params);
+      this.db.run(sql, params, function(err) {
+        if (err) {
+          console.error('Error running query:', err);
+          reject(err);
+          return;
+        }
+        resolve(this);
+      });
+    });
+  }
+
+  get(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      console.log('Getting result for query:', sql, 'with params:', params);
+      this.db.get(sql, params, (err, result) => {
+        if (err) {
+          console.error('Error getting result:', err);
+          reject(err);
+          return;
+        }
+        console.log('Query result:', result);
+        resolve(result);
+      });
+    });
+  }
+
+  all(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      console.log('Getting all results for query:', sql, 'with params:', params);
+      this.db.all(sql, params, (err, rows) => {
+        if (err) {
+          console.error('Error getting all results:', err);
+          reject(err);
+          return;
+        }
+        console.log('Query returned', rows.length, 'rows');
+        resolve(rows);
+      });
+    });
+  }
+}
+
+// Create a singleton instance
+const database = new Database();
+module.exports = database; 

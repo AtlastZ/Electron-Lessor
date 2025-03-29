@@ -11,7 +11,11 @@
     "build:mac": "electron-builder --mac",
     "build:linux": "electron-builder --linux",
     "build:all": "electron-builder --win --mac --linux",
-    "rebuild": "electron-rebuild"
+    "migrate": "NODE_ENV=development node src/database/migrate.js",
+    "migrate:rollback": "NODE_ENV=development node src/database/migrate.js rollback",
+    "seed": "NODE_ENV=development node src/database/seed.js",
+    "db:create": "NODE_ENV=development node src/database/create.js",
+    "db:reset": "yarn migrate:rollback && yarn migrate && yarn seed"
   },
   "license": "MIT",
   "packageManager": "yarn@4.8.0",

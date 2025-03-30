@@ -45,6 +45,22 @@ async function runMigrations() {
       await seed.up();
     }
 
+    // Create rooms table if it doesn't exist
+    await database.run(`
+      CREATE TABLE IF NOT EXISTS rooms (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'available',
+        description TEXT,
+        price REAL NOT NULL,
+        water_unit REAL NOT NULL DEFAULT 0,
+        water_cost_per_unit REAL NOT NULL DEFAULT 0,
+        electric_unit REAL NOT NULL DEFAULT 0,
+        electric_cost_per_unit REAL NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     console.log('All migrations and seeds completed successfully');
   } catch (error) {
     console.error('Error running migrations:', error);

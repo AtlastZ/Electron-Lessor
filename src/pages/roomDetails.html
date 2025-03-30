@@ -18,6 +18,7 @@
         <div class="page-header">
             <button class="back-btn" onclick="goBack()">Back</button>
             <h1 id="pageTitle">Room Details</h1>
+            <button id="createBillBtn" class="primary-btn">Create Bill</button>
         </div>
         <div class="room-details-container">
             <form class="room-form" onsubmit="event.preventDefault(); saveRoom();">
@@ -42,6 +43,22 @@
                     <input type="number" id="price" step="0.01" min="0" required>
                 </div>
                 <div class="form-row">
+                    <label for="waterUnit">Water Unit:</label>
+                    <input type="number" id="waterUnit" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="waterCostPerUnit">Water Cost per Unit:</label>
+                    <input type="number" id="waterCostPerUnit" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="electricUnit">Electric Unit:</label>
+                    <input type="number" id="electricUnit" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="electricCostPerUnit">Electric Cost per Unit:</label>
+                    <input type="number" id="electricCostPerUnit" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
                     <span class="detail-label">Created At:</span>
                     <span id="createdAt" class="detail-value"></span>
                 </div>
@@ -49,6 +66,30 @@
                     <button type="submit" id="saveBtn" class="primary-btn">Save Room</button>
                 </div>
             </form>
+        </div>
+
+        <!-- Billing History Section -->
+        <div class="billing-history-container">
+            <h2>Billing History</h2>
+            <div class="table-container">
+                <table class="bill-table">
+                    <thead>
+                        <tr>
+                            <th>Bill Date</th>
+                            <th>Due Date</th>
+                            <th>Room Cost</th>
+                            <th>Electric Cost</th>
+                            <th>Water Cost</th>
+                            <th>Total Cost</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="billHistory">
+                        <!-- Bill history rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <script src="../renderer/roomDetails.js"></script>

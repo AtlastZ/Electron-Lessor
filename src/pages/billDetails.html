@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <title>Bill Details</title>
+    <link rel="stylesheet" href="../styles/main.css">
+  </head>
+  <body>
+    <div class="container">
+        <div class="page-header">
+            <button class="back-btn" onclick="goBack()">Back</button>
+            <h1 id="pageTitle">Create New Bill</h1>
+        </div>
+        <div class="bill-details-container">
+            <form class="bill-form" onsubmit="event.preventDefault(); saveBill();">
+                <div class="form-row">
+                    <label for="roomId">Room:</label>
+                    <select id="roomId" required>
+                        <!-- Room options will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="roomCost">Room Cost:</label>
+                    <input type="number" id="roomCost" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="electricCost">Electric Cost:</label>
+                    <input type="number" id="electricCost" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="waterCost">Water Cost:</label>
+                    <input type="number" id="waterCost" step="0.01" min="0" required>
+                </div>
+                <div class="form-row">
+                    <label for="billDate">Bill Date:</label>
+                    <input type="date" id="billDate" required>
+                </div>
+                <div class="form-row">
+                    <label for="dueDate">Due Date:</label>
+                    <input type="date" id="dueDate" required>
+                </div>
+                <div class="form-row">
+                    <label for="status">Status:</label>
+                    <select id="status" required>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                </div>
+                <div class="form-row total-cost">
+                    <span class="detail-label">Total Cost:</span>
+                    <span id="totalCost" class="detail-value">$0.00</span>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="saveBtn" class="primary-btn">Save Bill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../renderer/billDetails.js"></script>
+  </body>
+</html> 

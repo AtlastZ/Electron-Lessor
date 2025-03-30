@@ -10,31 +10,36 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
-    <title>Room Management System</title>
+    <title>Bill Management</title>
     <link rel="stylesheet" href="../styles/main.css">
   </head>
   <body>
     <div class="container">
-        <h1>Room Management</h1>
+        <div class="page-header">
+            <button class="back-btn" onclick="goBack()">Back</button>
+            <h1>Bill Management</h1>
+        </div>
         <div class="action-bar">
-            <button onclick="window.location.href='bills.html'" class="secondary-btn">View Bills</button>
-            <button id="addRoomBtn" class="primary-btn">Add New Room</button>
+            <button id="addBillBtn" class="primary-btn">Create New Bill</button>
         </div>
         <div class="table-container">
-            <table class="room-table">
+            <table class="bill-table">
                 <thead>
                     <tr>
-                        <th>Room Name</th>
+                        <th>Room</th>
+                        <th>Bill Date</th>
+                        <th>Due Date</th>
+                        <th>Total Cost</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="roomList">
-                    <!-- Room rows will be inserted here -->
+                <tbody id="billList">
+                    <!-- Bill rows will be inserted here -->
                 </tbody>
             </table>
         </div>
     </div>
-    <script src="../renderer/roomList.js"></script>
+    <script src="../renderer/billList.js"></script>
   </body>
-</html>
+</html> 
